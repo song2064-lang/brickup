@@ -64,7 +64,7 @@ export default function FranchiseIncubating() {
           <div className="flex items-center gap-4">
             {/* Logo */}
             <div className="flex-shrink-0">
-              <Image src="/brickup-logo-ww.png" alt="Brickup" width={120} height={30} className="h-8 w-auto" />
+              <Image src="/brickup-logo-wy.png" alt="Brickup" width={120} height={30} className="h-8 w-auto" />
             </div>
 
             {/* Form Fields */}

@@ -5,14 +5,7 @@ export default function Home() {
   return (
     <div className="relative min-h-screen flex flex-col lg:flex-row">
       <div className="hidden lg:block absolute top-8 left-1/2 -translate-x-1/2 z-20">
-        <Image
-          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/brickup-logo-ww-t7EoiNhAGc02sIANNfKpduv4yu35xZ.png"
-          alt="Brickup Logo"
-          width={192}
-          height={64}
-          className="w-48 h-auto"
-          priority
-        />
+        <Image src="/brickup-logo-wy.png" alt="Brickup Logo" width={192} height={64} className="w-48 h-auto" priority />
       </div>
 
       {/* Left Section - Franchise Incubating */}
@@ -28,7 +21,7 @@ export default function Home() {
 
         <div className="lg:hidden absolute top-6 left-1/2 -translate-x-1/2 z-20">
           <Image
-            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/brickup-logo-ww-t7EoiNhAGc02sIANNfKpduv4yu35xZ.png"
+            src="/brickup-logo-wy.png"
             alt="Brickup Logo"
             width={160}
             height={53}
