@@ -1,24 +1,160 @@
+"use client"
+
+import type React from "react"
+
+import Image from "next/image"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 
 export default function FranchiseIncubating() {
+  const router = useRouter()
+
+  const handleCTAClick = (e: React.MouseEvent) => {
+    e.preventDefault()
+    window.scrollTo({ top: 0, behavior: "instant" })
+    router.push("/franchise-matching")
+  }
+
   return (
-    <div className="relative min-h-screen bg-[#3b3b3b]">
-      {/* Back to Home Link */}
-      <Link
-        href="/"
-        className="absolute top-8 left-8 z-20 px-6 py-2 bg-white/10 backdrop-blur-sm border border-white/30 text-white hover:bg-white/20 transition-colors rounded"
-      >
-        ← 홈으로
+    <div className="relative w-full bg-black pb-20 lg:pb-20">
+      {/* Full Page Image Display */}
+      <div className="w-full">
+        {/* Mobile Image */}
+        <Image
+          src="/franchise-incubating-mobile.jpg"
+          alt="프랜차이즈 인큐베이팅"
+          width={768}
+          height={5000}
+          className="w-full h-auto lg:hidden"
+          priority
+        />
+        {/* Desktop Image */}
+        <Image
+          src="/franchise-incubating-full.jpg"
+          alt="프랜차이즈 인큐베이팅"
+          width={1920}
+          height={5000}
+          className="w-full h-auto hidden lg:block"
+          priority
+        />
+      </div>
+
+      <Link href="/franchise-matching" className="relative w-full block cursor-pointer" onClick={handleCTAClick}>
+        {/* Mobile CTA */}
+        <Image
+          src="/matching-cta-mobile.jpg"
+          alt="예비창업자이신가요?"
+          width={768}
+          height={800}
+          className="w-full h-auto lg:hidden"
+        />
+        {/* Desktop CTA */}
+        <Image
+          src="/matching-cta.jpg"
+          alt="예비창업자이신가요?"
+          width={1920}
+          height={500}
+          className="w-full h-auto hidden lg:block"
+        />
       </Link>
 
-      {/* Image Placeholder */}
-      <div className="w-full h-screen flex items-center justify-center">
-        <div className="w-full max-w-7xl mx-auto px-8">
-          <div className="w-full aspect-video bg-white/10 border-4 border-dashed border-white/50 rounded-lg flex items-center justify-center">
-            <div className="text-center">
-              <p className="text-white text-2xl font-medium mb-2">프랜차이즈 인큐베이팅 이미지</p>
-              <p className="text-white/70 text-lg">Full Image Placeholder</p>
+      <div className="fixed bottom-0 left-0 right-0 bg-[#16469E] z-50 shadow-2xl">
+        {/* Desktop Layout */}
+        <div className="hidden lg:block max-w-[1920px] mx-auto px-4 py-4">
+          <div className="flex items-center gap-4">
+            {/* Logo */}
+            <div className="flex-shrink-0">
+              <Image src="/brickup-logo-ww.png" alt="Brickup" width={120} height={30} className="h-8 w-auto" />
             </div>
+
+            {/* Form Fields */}
+            <div className="flex-1 flex items-center gap-3">
+              {/* Select Box */}
+              <select className="px-4 py-3 rounded bg-white text-[#414141] text-sm min-w-[180px] focus:outline-none focus:ring-2 focus:ring-[#fff200]">
+                <option>문의유형 선택</option>
+                <option>브랜딩</option>
+                <option>DB</option>
+                <option>마케팅</option>
+                <option>영업 대행</option>
+                <option>R&D(메뉴개발)</option>
+                <option>기타</option>
+              </select>
+
+              {/* Brand Name Input */}
+              <input
+                type="text"
+                placeholder="브랜드명"
+                className="px-4 py-3 rounded bg-white text-[#414141] text-sm flex-1 focus:outline-none focus:ring-2 focus:ring-[#fff200]"
+              />
+
+              {/* Name Input */}
+              <input
+                type="text"
+                placeholder="성함"
+                className="px-4 py-3 rounded bg-white text-[#414141] text-sm flex-1 focus:outline-none focus:ring-2 focus:ring-[#fff200]"
+              />
+
+              {/* Contact Input */}
+              <input
+                type="tel"
+                placeholder="연락처"
+                className="px-4 py-3 rounded bg-white text-[#414141] text-sm flex-1 focus:outline-none focus:ring-2 focus:ring-[#fff200]"
+              />
+
+              {/* Privacy Consent Checkbox */}
+              <label className="flex items-center gap-2 text-white text-sm whitespace-nowrap cursor-pointer">
+                <input type="checkbox" className="w-4 h-4 rounded" />
+                개인정보수집 동의
+              </label>
+
+              {/* Submit Button */}
+              <button className="px-8 py-3 bg-[#fff200] text-[#16469E] font-bold rounded hover:bg-[#ffed00] transition-colors whitespace-nowrap cursor-pointer">
+                ✉ 문의하기
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile Layout */}
+        <div className="lg:hidden px-3 py-3">
+          <div className="flex flex-col gap-2">
+            {/* First Row: Select, Name, Contact */}
+            <div className="flex gap-1.5">
+              <select className="px-2 py-2 rounded bg-white text-[#414141] text-xs flex-1 min-w-0 focus:outline-none">
+                <option>문의유형 선택</option>
+                <option>브랜딩</option>
+                <option>DB</option>
+                <option>마케팅</option>
+                <option>영업 대행</option>
+                <option>R&D(메뉴개발)</option>
+                <option>기타</option>
+              </select>
+
+              <input
+                type="text"
+                placeholder="성함"
+                className="px-2 py-2 rounded bg-white text-[#414141] text-xs flex-1 min-w-0 focus:outline-none"
+              />
+
+              <input
+                type="tel"
+                placeholder="연락처"
+                className="px-2 py-2 rounded bg-white text-[#414141] text-xs flex-1 min-w-0 focus:outline-none"
+              />
+            </div>
+
+            {/* Second Row: Checkbox */}
+            <div className="flex items-center px-1">
+              <label className="flex items-center gap-1.5 text-white text-xs cursor-pointer whitespace-nowrap">
+                <input type="checkbox" className="w-3.5 h-3.5 rounded border-white flex-shrink-0" />
+                개인정보 수집 동의
+              </label>
+            </div>
+
+            {/* Third Row: Submit Button */}
+            <button className="w-full py-2.5 bg-[#fff200] text-black font-bold text-sm rounded hover:bg-[#ffed00] transition-colors cursor-pointer">
+              문의하기
+            </button>
           </div>
         </div>
       </div>
