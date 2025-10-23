@@ -82,7 +82,7 @@
   --color-card-foreground: var(--card-foreground);
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
-  --color-primary: #fff200;
+  --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
@@ -125,5 +125,193 @@
     @apply bg-background text-foreground;
     margin: 0;
     padding: 0;
+    overflow-x: hidden;
+  }
+}
+
+@layer utilities {
+  @keyframes slideDown {
+    0% {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 0;
+    }
+  }
+
+  .animate-slideDown {
+    animation: slideDown 2s ease-in-out infinite;
+  }
+
+  @keyframes mouseScrollFast {
+    0%,
+    100% {
+      transform: translateY(0);
+      opacity: 0.7;
+    }
+    50% {
+      transform: translateY(12px);
+      opacity: 1;
+    }
+  }
+
+  .animate-mouseScrollFast {
+    animation: mouseScrollFast 1.2s ease-in-out infinite;
+  }
+
+  @keyframes fadeInDown {
+    0% {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fadeInDown {
+    animation: fadeInDown 0.6s ease-out;
+  }
+
+  @keyframes mouseSmoothScroll {
+    0%,
+    100% {
+      transform: translateY(0);
+      opacity: 0.7;
+    }
+    50% {
+      transform: translateY(15px);
+      opacity: 1;
+    }
+  }
+
+  .animate-mouseSmoothScroll {
+    animation: mouseSmoothScroll 1.5s ease-in-out infinite;
+  }
+
+  @keyframes mouseScroll {
+    0%,
+    100% {
+      transform: translateY(0);
+      opacity: 0.7;
+    }
+    50% {
+      transform: translateY(8px);
+      opacity: 1;
+    }
+  }
+
+  @keyframes mouseWheel {
+    0%,
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    50% {
+      transform: translateY(8px);
+      opacity: 0.3;
+    }
+  }
+
+  .animate-mouseScroll {
+    animation: mouseScroll 2s ease-in-out infinite;
+  }
+
+  .animate-mouseWheel {
+    animation: mouseWheel 2s ease-in-out infinite;
+  }
+
+  @keyframes slideInRight {
+    0% {
+      opacity: 0;
+      transform: translateX(50px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .animate-slideInRight {
+    animation: slideInRight 0.8s ease-out;
+  }
+
+  /* Improved text and background animation - text fades in first, then background sweeps dramatically */
+  @keyframes textFadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes bgSweepIn {
+    0% {
+      clip-path: inset(0 100% 0 0);
+    }
+    100% {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+
+  .animate-textFadeIn {
+    animation: textFadeIn 0.6s ease-out forwards;
+  }
+
+  .animate-bgSweepIn {
+    background-color: #16469e;
+    clip-path: inset(0 100% 0 0);
+    animation: bgSweepIn 0.8s ease-out forwards;
+  }
+
+  /* Added logo slider animations for infinite scrolling */
+  @keyframes slide-right {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  @keyframes slide-left {
+    0% {
+      transform: translateX(-50%);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
+
+  /* Increased animation duration from 60s to 120s for slower speed */
+  .animate-slide-right {
+    animation: slide-right 120s linear infinite;
+  }
+
+  .animate-slide-left {
+    animation: slide-left 120s linear infinite;
+  }
+
+  /* Added left-to-right background fill animation */
+  @keyframes bgFillLTR {
+    0% {
+      transform: scaleX(0);
+    }
+    100% {
+      transform: scaleX(1);
+    }
+  }
+
+  .animate-bgFillLTR {
+    animation: bgFillLTR 0.8s ease-out forwards;
   }
 }
