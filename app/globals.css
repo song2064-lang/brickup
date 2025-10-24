@@ -115,21 +115,21 @@
   --color-dark: #3b3b3b;
   --color-light: #ffffff;
   --color-gray: #d9d9d9;
-}
 
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
-    margin: 0;
-    padding: 0;
-    overflow-x: hidden;
-  }
-}
+  /* Custom Animations - Tailwind v4 style */
+  --animate-slideDown: slideDown 2s ease-in-out infinite;
+  --animate-mouseScrollFast: mouseScrollFast 1.2s ease-in-out infinite;
+  --animate-fadeInDown: fadeInDown 0.6s ease-out;
+  --animate-mouseSmoothScroll: mouseSmoothScroll 1.5s ease-in-out infinite;
+  --animate-mouseScroll: mouseScroll 2s ease-in-out infinite;
+  --animate-mouseWheel: mouseWheel 2s ease-in-out infinite;
+  --animate-slideInRight: slideInRight 0.8s ease-out;
+  --animate-textFadeIn: textFadeIn 0.6s ease-out forwards;
+  --animate-bgSweepIn: bgSweepIn 0.8s ease-out forwards;
+  --animate-slide-right: slide-right 120s linear infinite;
+  --animate-slide-left: slide-left 120s linear infinite;
+  --animate-bgFillLTR: bgFillLTR 0.8s ease-out forwards;
 
-@layer utilities {
   @keyframes slideDown {
     0% {
       transform: translateY(-100%);
@@ -144,10 +144,6 @@
     }
   }
 
-  .animate-slideDown {
-    animation: slideDown 2s ease-in-out infinite;
-  }
-
   @keyframes mouseScrollFast {
     0%,
     100% {
@@ -158,10 +154,6 @@
       transform: translateY(12px);
       opacity: 1;
     }
-  }
-
-  .animate-mouseScrollFast {
-    animation: mouseScrollFast 1.2s ease-in-out infinite;
   }
 
   @keyframes fadeInDown {
@@ -175,10 +167,6 @@
     }
   }
 
-  .animate-fadeInDown {
-    animation: fadeInDown 0.6s ease-out;
-  }
-
   @keyframes mouseSmoothScroll {
     0%,
     100% {
@@ -189,10 +177,6 @@
       transform: translateY(15px);
       opacity: 1;
     }
-  }
-
-  .animate-mouseSmoothScroll {
-    animation: mouseSmoothScroll 1.5s ease-in-out infinite;
   }
 
   @keyframes mouseScroll {
@@ -219,14 +203,6 @@
     }
   }
 
-  .animate-mouseScroll {
-    animation: mouseScroll 2s ease-in-out infinite;
-  }
-
-  .animate-mouseWheel {
-    animation: mouseWheel 2s ease-in-out infinite;
-  }
-
   @keyframes slideInRight {
     0% {
       opacity: 0;
@@ -238,11 +214,6 @@
     }
   }
 
-  .animate-slideInRight {
-    animation: slideInRight 0.8s ease-out;
-  }
-
-  /* Improved text and background animation - text fades in first, then background sweeps dramatically */
   @keyframes textFadeIn {
     0% {
       opacity: 0;
@@ -263,17 +234,6 @@
     }
   }
 
-  .animate-textFadeIn {
-    animation: textFadeIn 0.6s ease-out forwards;
-  }
-
-  .animate-bgSweepIn {
-    background-color: #16469e;
-    clip-path: inset(0 100% 0 0);
-    animation: bgSweepIn 0.8s ease-out forwards;
-  }
-
-  /* Added logo slider animations for infinite scrolling */
   @keyframes slide-right {
     0% {
       transform: translateX(0);
@@ -292,16 +252,6 @@
     }
   }
 
-  /* Increased animation duration from 60s to 120s for slower speed */
-  .animate-slide-right {
-    animation: slide-right 120s linear infinite;
-  }
-
-  .animate-slide-left {
-    animation: slide-left 120s linear infinite;
-  }
-
-  /* Added left-to-right background fill animation */
   @keyframes bgFillLTR {
     0% {
       transform: scaleX(0);
@@ -310,8 +260,22 @@
       transform: scaleX(1);
     }
   }
+}
 
-  .animate-bgFillLTR {
-    animation: bgFillLTR 0.8s ease-out forwards;
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
   }
+  body {
+    @apply bg-background text-foreground;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
+}
+
+/* Special styling for bgSweepIn animation */
+.animate-bgSweepIn {
+  background-color: #16469e;
+  clip-path: inset(0 100% 0 0);
 }

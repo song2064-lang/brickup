@@ -18,6 +18,9 @@ export const metadata: Metadata = {
   title: "Brickup - 프랜차이즈 전문 파트너",
   description: "브랜드 성장을 현실로 만드는 프랜차이즈 전문 파트너",
   generator: "v0.app",
+  icons: {
+    icon: "/favicon.png",
+  },
 }
 
 export default function RootLayout({
