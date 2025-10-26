@@ -2200,11 +2200,11 @@ export default function FranchiseIncubating() {
       </section>
 
       {/* Bottom Bar - Fixed validation cutoff issues */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 bg-[#16469E] shadow-2xl overflow-hidden">
+      <div className="fixed bottom-0 left-0 right-0 z-40 bg-[#16469E] shadow-2xl overflow-hidden max-w-full">
         {/* Mobile Layout - 2x2 Grid */}
-        <div className="lg:hidden w-full px-3 py-3">
+        <div className="lg:hidden w-full max-w-full px-2 py-2.5">
           <form
-            className="space-y-2"
+            className="space-y-2 max-w-full"
             onSubmit={async (e) => {
               e.preventDefault()
 
@@ -2257,39 +2257,39 @@ export default function FranchiseIncubating() {
             }}
           >
             {/* First Row - Brand and Company */}
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-2 gap-2 max-w-full">
               <input
                 type="text"
                 name="brand"
                 placeholder="브랜드명"
-                className="px-3 py-2.5 rounded bg-white text-[#414141] text-sm focus:outline-none focus:ring-2 focus:ring-[#fff200]"
+                className="w-full min-w-0 px-2.5 py-2.5 rounded bg-white text-[#414141] text-sm focus:outline-none focus:ring-2 focus:ring-[#fff200]"
               />
               <input
                 type="text"
                 name="company"
                 placeholder="회사명"
-                className="px-3 py-2.5 rounded bg-white text-[#414141] text-sm focus:outline-none focus:ring-2 focus:ring-[#fff200]"
+                className="w-full min-w-0 px-2.5 py-2.5 rounded bg-white text-[#414141] text-sm focus:outline-none focus:ring-2 focus:ring-[#fff200]"
               />
             </div>
 
             {/* Second Row - Name and Contact */}
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-2 gap-2 max-w-full">
               <input
                 type="text"
                 name="name"
                 placeholder="성명"
-                className="px-3 py-2.5 rounded bg-white text-[#414141] text-sm focus:outline-none focus:ring-2 focus:ring-[#fff200]"
+                className="w-full min-w-0 px-2.5 py-2.5 rounded bg-white text-[#414141] text-sm focus:outline-none focus:ring-2 focus:ring-[#fff200]"
               />
               <input
                 type="tel"
                 name="phone"
                 placeholder="연락처"
-                className="px-3 py-2.5 rounded bg-white text-[#414141] text-sm focus:outline-none focus:ring-2 focus:ring-[#fff200]"
+                className="w-full min-w-0 px-2.5 py-2.5 rounded bg-white text-[#414141] text-sm focus:outline-none focus:ring-2 focus:ring-[#fff200]"
               />
             </div>
 
             {/* Third Row - Checkbox and Submit Button */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 max-w-full">
               <label className="flex items-center gap-1.5 text-white text-xs cursor-pointer flex-shrink-0">
                 <input
                   type="checkbox"
@@ -2303,7 +2303,7 @@ export default function FranchiseIncubating() {
               <button
                 type="submit"
                 disabled={isSubmittingBottom}
-                className="flex-1 bg-[#FFF200] text-[#16469E] font-bold py-2.5 rounded hover:bg-[#ffed00] transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                className="flex-1 min-w-0 bg-[#FFF200] text-[#16469E] font-bold py-2.5 rounded hover:bg-[#ffed00] transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm"
               >
                 {isSubmittingBottom ? "전송 중..." : "문의하기"}
               </button>

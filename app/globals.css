@@ -129,6 +129,12 @@
   --animate-slide-right: slide-right 120s linear infinite;
   --animate-slide-left: slide-left 120s linear infinite;
   --animate-bgFillLTR: bgFillLTR 0.8s ease-out forwards;
+  /* Updated circle expansion animation for larger size */
+  --animate-circleExpand: circleExpand 1s ease-out forwards;
+  --animate-circleExpandMobile: circleExpandMobile 1s ease-out forwards;
+
+  --animate-scrollRight: scrollRight 60s linear infinite;
+  --animate-scrollLeft: scrollLeft 60s linear infinite;
 
   @keyframes slideDown {
     0% {
@@ -260,6 +266,54 @@
       transform: scaleX(1);
     }
   }
+
+  /* Updated circleExpand keyframe to expand to 650px for PC */
+  @keyframes circleExpand {
+    0% {
+      width: 10px;
+      height: 10px;
+      opacity: 0.8;
+    }
+    100% {
+      width: 650px;
+      height: 650px;
+      opacity: 1;
+    }
+  }
+
+  /* Added mobile version of circle expansion to 350px */
+  @keyframes circleExpandMobile {
+    0% {
+      width: 10px;
+      height: 10px;
+      opacity: 0.8;
+    }
+    100% {
+      width: 350px;
+      height: 350px;
+      opacity: 1;
+    }
+  }
+
+  @keyframes scrollRight {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  @keyframes scrollLeft {
+    0% {
+      transform: translateX(-50%);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
+
+  /* Removed scrollRight, scrollLeft, and titleFadeInDown animations as they're no longer needed */
 }
 
 @layer base {
