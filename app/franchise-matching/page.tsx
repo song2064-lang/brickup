@@ -8,6 +8,8 @@ import { useRouter } from "next/navigation"
 import { motion, useScroll, useTransform, useSpring } from "framer-motion"
 // import { FooterSection } from "@/components/footer-section" // Commented out as it's being replaced
 
+import { MobileStickyInquiry } from "@/components/mobile-sticky-inquiry"
+
 // ProcessSection component from page2-kMwG0.tsx
 function ProcessSection() {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -710,7 +712,6 @@ function ContactInquirySection() {
               </span>
             </label>
 
-            {/* Merged update starts here */}
             <button
               type="submit"
               disabled={!agreed}
@@ -718,7 +719,6 @@ function ContactInquirySection() {
             >
               문의하기
             </button>
-            {/* Merged update ends here */}
           </form>
         </div>
       </div>
@@ -754,7 +754,16 @@ const CTASection = () => {
       <div className="relative z-10 h-full max-w-[1180px] mx-auto px-6 flex flex-col">
         {/* Top CTA area - positioned 60px from top */}
         <div className="flex flex-col items-center text-center" style={{ paddingTop: "60px" }}>
-          <h2 className="text-white text-[32px] font-bold leading-tight">이미 브랜드가 있으신가요?</h2>
+            <h2
+                className="text-white font-bold leading-tight text-center"
+                style={{
+                    fontSize: "clamp(18px, 6vw, 32px)",
+                    lineHeight: "1.2",
+                    whiteSpace: "nowrap",
+                }}
+            >
+                이미 브랜드가 있으신가요?
+            </h2>
           <p className="mt-4 text-white text-[18px]">브릭업의 효율적인 인큐베이팅 서비스를 경험해보세요.</p>
 
           {/* Button - CSS styled, not image */}
@@ -799,9 +808,9 @@ const CTASection = () => {
             {/* Left: Logo + Company Info */}
             <div className="flex flex-col gap-2">
               <img src="/images/brickup-logo-ww.png" alt="Brickup Logo" className="w-[130px] h-auto mb-2" />
-                <p className="font-bold">(주)브릭업</p>
-                <p>사업자등록번호 : 339-87-03755 | 법인등록번호 : 110111-0938846</p>
-                <p>서울시 금천구 벚꽃로 234 에이스하이엔6차 804호 | brickup@naver.com | 1566-1343</p>
+              <p className="font-bold">(주)브릭업</p>
+              <p>사업자등록번호 : 339-87-03755 | 법인등록번호 : 110111-0938846</p>
+              <p>서울시 금천구 벚꽃로 234 에이스하이엔6차 804호 | brickup@naver.com | 1566-1343</p>
             </div>
 
             {/* Right: Copyright + Links */}
@@ -1059,7 +1068,7 @@ export default function FranchiseMatching() {
   ]
 
   return (
-    <div className="relative w-full bg-white pb-16 lg:pb-16">
+    <div className="relative w-full bg-white pb-16 lg:pb-16 overflow-x-hidden">
       {/* Hero Section - Desktop */}
       <section className="hidden lg:flex relative w-full h-screen flex-col overflow-hidden">
         <div className="absolute inset-0 z-0">
@@ -1613,7 +1622,7 @@ export default function FranchiseMatching() {
       <PrivacyModal />
 
       <div
-        className="fixed bottom-0 left-0 w-full z-50 bg-[#16469E] shadow-[0_-2px_8px_rgba(0,0,0,0.1)]"
+        className="hidden lg:block fixed bottom-0 left-0 w-full z-50 bg-[#16469E] shadow-[0_-2px_8px_rgba(0,0,0,0.1)]"
         style={{ height: "80px" }}
       >
         <form
@@ -1631,19 +1640,19 @@ export default function FranchiseMatching() {
           className="h-full flex items-center"
         >
           <div className="max-w-[1440px] mx-auto w-full px-4 lg:px-8">
-            <div className="max-w-[1180px] mx-auto flex flex-col lg:flex-row items-center justify-between gap-3 lg:gap-4">
+            <div className="max-w-[1180px] mx-auto flex items-center justify-between gap-4">
               <Link href="/" className="flex-shrink-0 hover:opacity-80 transition-opacity">
                 <img
                   src="/images/brickup-logo-bottom.png"
                   alt="Brickup Logo"
-                  style={{ width: "132px", height: "34px", objectFit: "contain" }}
+                  className="w-[132px] h-[34px] object-contain"
                 />
               </Link>
 
               {/* Inquiry Type Select */}
               <select
                 name="inquiryType"
-                className="w-full lg:flex-1 lg:min-w-[150px] h-[40px] rounded-md px-3 text-[14px] bg-white text-[#111827] border border-[#D1D9E8] focus:outline-none focus:border-[#16469E] focus:ring-2 focus:ring-[#16469E]/20"
+                className="flex-1 min-w-[150px] h-[40px] rounded-md px-3 text-[14px] bg-white text-[#111827] border border-[#D1D9E8] focus:outline-none focus:border-[#16469E] focus:ring-2 focus:ring-[#16469E]/20"
                 required
               >
                 <option value="" className="text-[#999999]">
@@ -1661,7 +1670,7 @@ export default function FranchiseMatching() {
                 type="text"
                 name="name"
                 placeholder="성함"
-                className="w-full lg:flex-1 lg:min-w-[100px] h-[40px] rounded-md px-3 text-[14px] bg-white text-[#111827] placeholder:text-[#999999] border border-[#D1D9E8] focus:outline-none focus:border-[#16469E] focus:ring-2 focus:ring-[#16469E]/20"
+                className="flex-1 min-w-[100px] h-[40px] rounded-md px-3 text-[14px] bg-white text-[#111827] placeholder:text-[#999999] border border-[#D1D9E8] focus:outline-none focus:border-[#16469E] focus:ring-2 focus:ring-[#16469E]/20"
                 required
               />
 
@@ -1670,7 +1679,7 @@ export default function FranchiseMatching() {
                 type="tel"
                 name="phone"
                 placeholder="연락처"
-                className="w-full lg:flex-1 lg:min-w-[140px] h-[40px] rounded-md px-3 text-[14px] bg-white text-[#111827] placeholder:text-[#999999] border border-[#D1D9E8] focus:outline-none focus:border-[#16469E] focus:ring-2 focus:ring-[#16469E]/20"
+                className="flex-1 min-w-[140px] h-[40px] rounded-md px-3 text-[14px] bg-white text-[#111827] placeholder:text-[#999999] border border-[#D1D9E8] focus:outline-none focus:border-[#16469E] focus:ring-2 focus:ring-[#16469E]/20"
                 required
               />
 
@@ -1693,10 +1702,7 @@ export default function FranchiseMatching() {
               </label>
 
               {/* Submit Button */}
-              <button
-                type="submit"
-                className="w-full lg:w-auto flex-shrink-0 h-[40px] hover:brightness-110 transition-all"
-              >
+              <button type="submit" className="w-auto flex-shrink-0 h-[40px] hover:brightness-110 transition-all">
                 <img
                   src="/images/inquiry-button.png"
                   alt="문의하기"
@@ -1708,6 +1714,8 @@ export default function FranchiseMatching() {
           </div>
         </form>
       </div>
+
+      <MobileStickyInquiry variant="matching" />
     </div>
   )
 }
