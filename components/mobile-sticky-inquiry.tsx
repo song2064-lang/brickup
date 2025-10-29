@@ -1,8 +1,7 @@
 "use client"
 
 import type React from "react"
-
-import { useState } from "react"
+import { useState, useEffect } from "react" // ✅ useEffect 임포트 추가
 
 interface MobileStickyInquiryProps {
   variant: "incubating" | "matching"
@@ -11,13 +10,32 @@ interface MobileStickyInquiryProps {
 export function MobileStickyInquiry({ variant }: MobileStickyInquiryProps) {
   const [formData, setFormData] = useState({
     type: "",
-    name: "",
+    company: "", // Changed from name to company
     phone: "",
   })
   const [agreed, setAgreed] = useState(false)
   const [showPrivacyModal, setShowPrivacyModal] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  // ✅ 여기 useEffect 추가
+  useEffect(() => {
+    const el = document.querySelector(".mobile-sticky-inquiry")
+    if (!el) return
 
+    const updateHeight = () => {
+      const h = el.getBoundingClientRect().height
+      document.documentElement.style.setProperty("--mobile-sticky-height", `${h}px`)
+    }
+
+    updateHeight()
+    const ro = new ResizeObserver(updateHeight)
+    ro.observe(el)
+    window.addEventListener("resize", updateHeight)
+
+    return () => {
+      ro.disconnect()
+      window.removeEventListener("resize", updateHeight)
+    }
+  }, [])
   const inquiryOptions =
     variant === "incubating"
       ? ["브랜딩", "DB마케팅", "영업대행", "R&D(메뉴개발)", "기타"]
@@ -36,7 +54,7 @@ export function MobileStickyInquiry({ variant }: MobileStickyInquiryProps) {
       return
     }
 
-    if (!formData.type || !formData.name || !formData.phone) {
+    if (!formData.type || !formData.company || !formData.phone) {
       alert("모든 항목을 입력해주세요.")
       return
     }
@@ -55,21 +73,24 @@ export function MobileStickyInquiry({ variant }: MobileStickyInquiryProps) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          formType: variant,
+          platform: "mobile",
+          position: "footer",
           type: formData.type,
-          name: formData.name,
+          company: formData.company, // Using company field
           phone: formData.phone,
         }),
       })
 
       if (response.ok) {
-        alert("문의가 성공적으로 접수되었습니다.")
-        setFormData({ type: "", name: "", phone: "" })
+        alert("문의가 정상적으로 접수되었습니다!")
+        setFormData({ type: "", company: "", phone: "" })
         setAgreed(false)
       } else {
-        alert("문의 접수에 실패했습니다. 다시 시도해주세요.")
+        alert("문의 접수 중 오류가 발생했습니다. 다시 시도해주세요.")
       }
     } catch (error) {
-      alert("문의 접수 중 오류가 발생했습니다.")
+      alert("문의 접수 중 오류가 발생했습니다. 다시 시도해주세요.")
     } finally {
       setIsSubmitting(false)
     }
@@ -79,7 +100,7 @@ export function MobileStickyInquiry({ variant }: MobileStickyInquiryProps) {
     <>
       {/* Mobile Sticky Inquiry Bar */}
       <div
-        className="fixed bottom-0 left-0 right-0 z-50 bg-[#16469E] border-t border-white/20 lg:hidden"
+        className="mobile-sticky-inquiry fixed bottom-0 left-0 right-0 z-50 bg-[#16469E] border-t border-white/20 lg:hidden"
         style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
       >
         <div className="max-w-[1440px] mx-auto px-4 py-3">
@@ -104,12 +125,12 @@ export function MobileStickyInquiry({ variant }: MobileStickyInquiryProps) {
                 <div className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500">▾</div>
               </div>
 
-              {/* Name Input */}
+              {/* Company Input */}
               <input
                 type="text"
                 placeholder="성함"
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                value={formData.company}
+                onChange={(e) => setFormData({ ...formData, company: e.target.value })}
                 className="h-10 px-3 text-sm bg-white text-gray-700 border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-white/50"
                 style={{ fontSize: "13px" }}
               />
@@ -156,7 +177,7 @@ export function MobileStickyInquiry({ variant }: MobileStickyInquiryProps) {
               className="w-full h-12 bg-[#FFF200] text-black font-extrabold rounded-lg transition-opacity disabled:opacity-50"
               style={{ fontSize: "16px" }}
             >
-              {isSubmitting ? "전송 중..." : "문의하기"}
+              {isSubmitting ? "전송중..." : "문의하기"}
             </button>
           </form>
         </div>

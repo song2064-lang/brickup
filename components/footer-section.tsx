@@ -10,14 +10,19 @@ export function FooterSection() {
 
   return (
     <>
-      <section
-        className="relative w-full text-white bg-cover bg-center flex flex-col justify-between"
-        style={{
-          backgroundImage: "url('/images/footer2.png')",
-          height: "475px",
-          backgroundColor: "transparent",
-        }}
-      >
+        <section
+            className="relative w-full text-white bg-cover bg-center flex flex-col justify-between min-h-screen"
+            style={{
+                backgroundImage: "url('/images/footer2.png')",
+                backgroundRepeat: "no-repeat",
+                backgroundSize: "cover", // ✅ 세로로 꽉 채움
+                backgroundPosition: "center center",
+                paddingBottom: "var(--mobile-sticky-height, 0px)", // ✅ 하단 겹침 방지
+            }}
+        >
+
+
+
         {/* 어두운 오버레이 */}
         <div className="absolute inset-0 bg-black/45 z-0" />
 

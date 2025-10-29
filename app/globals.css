@@ -333,3 +333,7 @@
   background-color: #16469e;
   clip-path: inset(0 100% 0 0);
 }
+
+:root {
+    --mobile-sticky-height: 0px;
+}
