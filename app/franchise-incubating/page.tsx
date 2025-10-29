@@ -1151,7 +1151,7 @@ export default function FranchiseIncubatingPage() {
                 suffix: "%",
                 extra: "법률자문 만족도",
               },
-              { label: "R&D 구축 후", value: "기존 재료비 감소 +", count: 8, suffix: "%", extra: "이상" },
+              { label: "R&D 구축 후", value: "재료비 감소 +", count: 8, suffix: "%", extra: "이상" },
             ].map((stat, idx) => (
               <div key={idx} className="flex flex-col items-center justify-center gap-2 w-full">
                 <p className="text-white font-light text-[18px] text-center tracking-tight">{stat.label}</p>
@@ -1177,7 +1177,7 @@ export default function FranchiseIncubatingPage() {
                 extra: "법률자문 만족도",
                 nowrap: true,
               },
-              { label: "R&D 구축 후", value: "기존 재료비 감소 +", count: 8, suffix: "%", extra: "이상" },
+              { label: "R&D 구축 후", value: "재료비 감소 +", count: 8, suffix: "%", extra: "이상" , nowrap: true},
             ].map((stat, idx) => (
               <div
                 key={idx}
@@ -1285,21 +1285,18 @@ export default function FranchiseIncubatingPage() {
                       className="text-[13px] font-normal text-white leading-snug tracking-[-0.52px]"
                       style={{ fontFamily: "Pretendard, sans-serif" }}
                     >
-                      <font className="font-light">현재 브랜드의 매출 구조, 메뉴, 시스템을 전부 점검합니다.</font>
-                      <br />
-                      감이 아닌 데이터<font className="font-light">로,</font>
-                      <br />
-                      <font className="font-light">무엇이 강점이고 어디가 약점인지</font> 명확히 분석
-                      <font className="font-light">합니다.</font>
+                        <font className="font-light">브랜드의 매출 구조, 메뉴 구성, 운영 시스템을 꼼꼼히 점검합니다.
+                            <br/>
+                        감이 아닌 데이터 중심의 분석으로, 무엇이 잘 되고 있고
+                            <br/>
+                            어디를 보완해야 하는지를 명확히 짚어드립니다.</font>
                     </p>
                     <p
                       className="text-[13px] text-white leading-snug tracking-[-0.52px]"
                       style={{ fontFamily: "Pretendard, sans-serif" }}
                     >
-                      브랜드 진단 리포트 제공<font className="font-light">으로,</font>
-                      <br />
-                      <span className="font-bold underline">지금 우리 브랜드가 어디에 서 있는지</span>{" "}
-                      <font className="font-light">한눈에 파악하세요.</font>
+                        <font className="font-light"> 숫자와 현실을 기반으로,</font>{" "}
+                        <span className="font-bold">브랜드가 성장할 수 있는 방향</span>을 함께 찾아드립니다.
                     </p>
                   </div>
                 </div>
@@ -1384,7 +1381,7 @@ export default function FranchiseIncubatingPage() {
                   className="text-[16px] font-bold text-white leading-normal tracking-[-0.64px] mb-4 lg:mb-0 lg:group-hover:mb-4"
                   style={{ fontFamily: "Pretendard, sans-serif" }}
                 >
-                  계획은 빠르고,
+                  계획은 빠르게,
                   <br />
                   실행은 정확하게.
                 </p>
@@ -1397,23 +1394,19 @@ export default function FranchiseIncubatingPage() {
                       className="text-[13px] font-normal text-white leading-snug tracking-[-0.52px]"
                       style={{ fontFamily: "Pretendard, sans-serif" }}
                     >
-                      <font className="font-light">
-                        브랜딩, 영업, 마케팅, 메뉴개발까지
-                        <br />
-                        모든
-                      </font>{" "}
-                      <span className="font-bold">실행 로드맵을 한 화면에서 관리</span>합니다.
+                        <font className="font-light">
+                        브랜딩, 메뉴 개발, 마케팅 등 각 영역을 단계별로 명확히 나누고,<br/>
+                        우선순위에 따라 체계적으로 진행합니다.<br/>
+                        모든 과정은 담당자별 역할과 일정을 공유하며<br/>
+                            혼선 없이 속도감 있게 실행되는 구조로 운영됩니다.</font>
+
+
                     </p>
                     <p
                       className="text-[13px] font-normal text-white leading-snug tracking-[-0.52px]"
                       style={{ fontFamily: "Pretendard, sans-serif" }}
                     >
-                      <font className="font-light">
-                        각 단계별 담당자 지정 + 일정 공유로
-                        <br />
-                      </font>
-                      <span className="font-bold underline">누가, 언제, 무엇을</span>{" "}
-                      <font className="font-light">명확히 볼 수 있습니다.</font>
+                        <font className="font-light">아이디어가 아닌,</font>{" "} <span className="font-bold">실제 결과로 증명하는 실행력이 브릭업의 강점입니다.</span>
                     </p>
                   </div>
                 </div>
@@ -1469,7 +1462,7 @@ export default function FranchiseIncubatingPage() {
                         className="text-[13px] font-normal text-white leading-snug tracking-[-0.52px]"
                         style={{ fontFamily: "Pretendard, sans-serif" }}
                       >
-                        <span className="font-bold">브랙업</span>
+                        <span className="font-bold">브릭업</span>
                         <font className="font-light">의 실행력=</font>{" "}
                         <span className="font-bold underline">기획력 + 속도감 + 현장감</span>
                       </p>
@@ -1515,9 +1508,9 @@ export default function FranchiseIncubatingPage() {
                         className="text-[13px] font-normal text-white leading-snug tracking-[-0.52px]"
                         style={{ fontFamily: "Pretendard, sans-serif" }}
                       >
-                        <font className="font-light">가맹문의 수, 광고 성과, 매출 지표 등</font>
+                        <font className="font-light">가맹문의 수, 광고 성과, 매출 지표 등</font>{" "}
                         모든 결과를 수치로 공개.
-                        <font className="font-light">이번달에 뭐가 잘 됐는지 한 눈에 볼 수 있는</font>
+                        <font className="font-light">이번{" "}달에 뭐가 잘 됐는지 한 눈에 볼 수 있는</font>{" "}
                         월간 성과 리포트 <font className="font-light">제공</font>
                       </p>
                       <p
@@ -1527,7 +1520,7 @@ export default function FranchiseIncubatingPage() {
                         <font className="font-light">브랜드의 성장을</font>{" "}
                         <span className="font-bold underline">데이터 기반으로 함께 점검</span>
                         <font className="font-light">합니다.</font>
-                        달립니다.
+
                       </p>
                     </div>
                   </div>
