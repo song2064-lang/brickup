@@ -2,7 +2,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { useEffect, useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { CounterAnimation } from "@/components/counter-animation"
 import { LogoSlider } from "@/components/logo-slider"
 import { ChevronDown } from "lucide-react" // Assuming ChevronDown is imported from lucide-react
@@ -2216,54 +2216,46 @@ export default function FranchiseIncubatingPage() {
             }}
           />
 
-          {/* Bottom info area */}
-          <div
-            className="absolute left-1/2 -translate-x-1/2 w-full max-w-[1180px] px-6"
-            style={{
-              top: "288px", // 260px + 28px margin
-              paddingTop: "24px",
-            }}
-          >
-            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6 text-white/80 text-[13px] leading-relaxed">
-              {/* Left: Logo + Company Info */}
-              <div className="flex flex-col gap-2">
-                <img src="/images/brickup-logo-ww.png" alt="Brickup Logo" className="w-[130px] h-auto mb-2" />
-                <p className="font-bold">(주)브릭업</p>
-                <p>사업자등록번호 : 339-87-03755 | 법인등록번호 : 110111-0938846</p>
-                <p>서울시 금천구 벚꽃로 234 에이스하이엔6차 804호 | brickup@naver.com | 1566-1343</p>
-              </div>
+            {/* Bottom info area */}
+            <div
+                className="absolute left-1/2 -translate-x-1/2 w-full max-w-[1180px] px-6"
+                style={{
+                    top: "288px", // 260px + 28px margin
+                    paddingTop: "24px",
+                }}
+            >
+                <div className="flex flex-col lg:flex-row justify-between items-end gap-6 text-white/80 text-[13px] leading-relaxed">
+                    {/* Left: Logo + Company Info */}
+                    <div className="flex flex-col gap-2">
+                        <img src="/images/brickup-logo-ww.png" alt="Brickup Logo" className="w-[130px] h-auto mb-2" />
+                        <p className="font-bold">(주)브릭업</p>
+                        <p>사업자등록번호 : 339-87-03755 | 법인등록번호 : 110111-0938846</p>
+                        <p>서울시 금천구 벚꽃로 234 에이스하이엔6차 804호 | brickup@naver.com | 1566-1343</p>
+                    </div>
 
-              {/* Right: Copyright + Links */}
-              <div className="text-left lg:text-right">
-                <p>Copyright © Brickup Inc. All Rights Reserved.</p>
-                <p className="space-x-2 mt-1">
-                  <button
-                    onClick={() => {
-                      // Open terms modal
-                      const modal = document.getElementById("terms-modal")
-                      if (modal) modal.classList.remove("hidden")
-                    }}
-                    className="hover:text-white transition-colors"
-                  >
-                    이용약관
-                  </button>
-                  <span>|</span>
-                  <button
-                    onClick={() => {
-                      // Open privacy modal
-                      const modal = document.getElementById("privacy-modal")
-                      if (modal) modal.classList.remove("hidden")
-                    }}
-                    className="hover:text-white transition-colors"
-                  >
-                    개인정보처리방침
-                  </button>
-                  <span>|</span>
-                  <span>사업자정보확인</span>
-                </p>
-              </div>
+                    {/* Right: Copyright + Links */}
+                    <div className="text-left lg:text-right">
+                        <p>Copyright © Brickup Inc. All Rights Reserved.</p>
+                        <p className="space-x-2 mt-1">
+                            <button
+                                onClick={() => setShowTermsModal(true)}
+                                className="hover:text-white transition-colors"
+                            >
+                                이용약관
+                            </button>
+                            <span>|</span>
+                            <button
+                                onClick={() => setShowPrivacyModal(true)}
+                                className="hover:text-white transition-colors"
+                            >
+                                개인정보처리방침
+                            </button>
+                            <span>|</span>
+                            <span>사업자정보확인</span>
+                        </p>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
       </section>
 

@@ -17,14 +17,9 @@ function ProcessSection() {
   const anchorRef = useRef<HTMLSpanElement>(null)
   const stepsRef = useRef<HTMLDivElement>(null)
 
-  const mobileContainerRef = useRef<HTMLDivElement>(null)
-  const mobileStepsRef = useRef<HTMLDivElement>(null)
-
   const [lineLeft, setLineLeft] = useState(0)
   const [lineTop, setLineTop] = useState(0)
   const [lineHeight, setLineHeight] = useState(0)
-
-  const [mobileLineMaxHeight, setMobileLineMaxHeight] = useState(0)
 
   // 스크롤 진행률 추적
   const { scrollYProgress } = useScroll({
@@ -41,18 +36,6 @@ function ProcessSection() {
     damping: 20, // 낮을수록 천천히 따라감
   })
 
-  const { scrollYProgress: mobileScrollProgress } = useScroll({
-    target: mobileContainerRef,
-    offset: ["start 80%", "end end"],
-  })
-
-  const mobileRawHeight = useTransform(mobileScrollProgress, [0, 1], [0, mobileLineMaxHeight])
-
-  const mobileSmoothHeight = useSpring(mobileRawHeight, {
-    stiffness: 40,
-    damping: 20,
-  })
-
   // 라인 위치 계산 ("다"의 ㅏ 기준)
   const measure = () => {
     if (!containerRef.current || !anchorRef.current || !stepsRef.current) return
@@ -66,21 +49,10 @@ function ProcessSection() {
     setLineHeight(s.height)
   }
 
-  const measureMobile = () => {
-    if (!mobileStepsRef.current) return
-    const height = mobileStepsRef.current.getBoundingClientRect().height
-    setMobileLineMaxHeight(height)
-  }
-
   useLayoutEffect(() => {
     measure()
-    measureMobile()
-    const ro = new ResizeObserver(() => {
-      measure()
-      measureMobile()
-    })
+    const ro = new ResizeObserver(() => measure())
     if (containerRef.current) ro.observe(containerRef.current)
-    if (mobileContainerRef.current) ro.observe(mobileContainerRef.current)
     if (stepsRef.current) ro.observe(stepsRef.current)
     if (titleRef.current) ro.observe(titleRef.current)
     window.addEventListener("resize", measure)
@@ -94,175 +66,83 @@ function ProcessSection() {
 
   const steps = [
     { title: "상담", desc: "창업자의 예산·목표·성향을 듣는 것부터 시작합니다.", eng: "Consulting" },
-    { title: "브랜드 매칭", desc: "수백 개 프랜차이즈 중에서 \n조건에 맞는 브랜드를 선별합니다.", eng: "Matching" },
+    { title: "브랜드 매칭", desc: "수백 개 프랜차이즈 중에서 조건에 맞는 브랜드를 선별합니다.", eng: "Matching" },
     {
       title: "상권 & 입지 분석",
-      desc: "본사추천입지 뿐만아니라, 브릭업 자체 점포개발팀이 \n성공가능성이 가장 높은자리를 찾습니다.",
+      desc: "본사추천입지 뿐만아니라, 브릭업 자체 점포개발팀이 성공가능성이 가장 높은자리를 찾습니다.",
       eng: "Analysis",
     },
     {
       title: "계약 & 준비",
-      desc: "가맹 계약서를 함께 검토하고, \n인테리어부터 오픈까지 함께 준비합니다.",
+      desc: "가맹 계약서를 함께 검토하고, 인테리어부터 오픈까지 함께 준비합니다.",
       eng: "Agreement",
     },
-    { title: "매장 오픈", desc: "초기 홍보와 오픈 이벤트까지 함께 진행해 \n안정적인 출발을 돕습니다.", eng: "Opening" },
-    { title: "사후 관리", desc: "오픈 후에도 매출 관리, 운영 컨설팅을 \n꾸준히 이어갑니다.", eng: "Follow-up" },
+    { title: "매장 오픈", desc: "초기 홍보와 오픈 이벤트까지 함께 진행해 안정적인 출발을 돕습니다.", eng: "Opening" },
+    { title: "사후 관리", desc: "오픈 후에도 매출 관리, 운영 컨설팅을 꾸준히 이어갑니다.", eng: "Follow-up" },
   ]
 
   return (
-    <>
-      <section className="hidden lg:block relative bg-[#16469E] text-white py-28 lg:py-36 overflow-visible">
-        <div ref={containerRef} className="max-w-[1200px] mx-auto px-6 lg:px-10 relative">
-          <div className="flex flex-col lg:flex-row lg:items-start">
-            {/* 왼쪽 타이틀 */}
-            <div ref={titleRef} className="w-full lg:w-[50%] relative mb-10 lg:mb-0">
-              <h2 className="text-[30px] lg:text-[34px] font-semibold leading-tight mb-2">막막한 창업,</h2>
-              <h2 className="text-[40px] lg:text-[46px] font-normal leading-tight relative inline-block">
-                <span className="font-semibold">브릭업이</span>{" "}
-                <span className="bg-white text-[#16469E] px-2 py-0.5 font-semibold">끝까지 함께</span> 합니
-                <span ref={anchorRef} className="inline-block align-baseline">
-                  다
-                </span>
-              </h2>
-            </div>
-
-            {/* 오른쪽 프로세스 */}
-            <div ref={stepsRef} className="w-full lg:w-[50%] relative mt-[160px]">
-              <div className="flex flex-col gap-10 text-left">
-                {steps.map((s, i) => (
-                  <motion.div
-                    key={s.title}
-                    initial={{ opacity: 0, y: -40 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: i * 0.15 }}
-                    viewport={{ once: true }}
-                    className="relative flex items-start justify-between w-full"
-                  >
-                    <div className="w-[70%] flex flex-col translate-x-[-8px] lg:translate-x-[-12px]">
-                      <p className="text-[19px] lg:text-[20px] font-bold mb-1 whitespace-nowrap">{s.title}</p>
-                      <p className="text-[14px] lg:text-[15px] text-white/85 whitespace-nowrap leading-relaxed">
-                        {s.desc}
-                      </p>
-                    </div>
-                    <div className="w-[30%] text-right mt-[10px] lg:mt-[14px]">
-                      <p className="text-[28px] lg:text-[30px] font-extrabold text-white/25 leading-none">{s.eng}</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
+    <section className="relative bg-[#16469E] text-white py-28 lg:py-36 overflow-visible">
+      <div ref={containerRef} className="max-w-[1200px] mx-auto px-6 lg:px-10 relative">
+        <div className="flex flex-col lg:flex-row lg:items-start">
+          {/* 왼쪽 타이틀 */}
+          <div ref={titleRef} className="w-full lg:w-[50%] relative mb-10 lg:mb-0">
+            <h2 className="text-[30px] lg:text-[34px] font-semibold leading-tight mb-2">막막한 창업,</h2>
+            <h2 className="text-[40px] lg:text-[46px] font-normal leading-tight relative inline-block">
+              <span className="font-semibold">브릭업이</span>{" "}
+              <span className="bg-white text-[#16469E] px-2 py-0.5 font-semibold">끝까지 함께</span> 합니
+              <span ref={anchorRef} className="inline-block align-baseline">
+                다
+              </span>
+            </h2>
           </div>
 
-          <motion.div
-            className="absolute z-20 origin-top pointer-events-none"
-            style={{
-              left: `${lineLeft - 10}px`, // Moved 1px more to the left (from -9 to -10)
-              top: `${lineTop}px`,
-              width: "41px", // Increased width from 40px to 41px
-              height: smoothHeight,
-            }}
-          >
-            <img
-              src="/line2.png"
-              alt="line"
-              className="block w-full h-full select-none"
-              draggable={false}
-              style={{ objectFit: "fill" }}
-            />
-          </motion.div>
-        </div>
-      </section>
-
-        {/* Mobile Process Section */}
-        <section
-            ref={mobileContainerRef}
-            className="lg:hidden relative bg-[#16469E] text-white pt-0 pb-16 overflow-hidden -top-10"
-        >
-            <div className="max-w-[400px] mx-auto px-4 relative">
-                {/* Title */}
-                <div className="mb-6">
-                    <h2 className="text-[26px] font-light leading-tight mb-1" style={{ letterSpacing: "-1.0px" }}>
-                        막막한 창업,
-                    </h2>
-                    <h2 className="text-[26px] font-normal leading-tight" style={{ letterSpacing: "-1.0px" }}>
-                        <span className="font-bold">브릭업이 끝까지 함께</span>합니다
-                    </h2>
-                </div>
-
-                {/* Steps with line2.png 이미지 라인 */}
-                <div className="relative pl-[32px]">
-                    {/* ✅ 스크롤에 따라 line2.png가 자연스럽게 늘어남 */}
-                    <motion.div
-                        className="absolute left-0 top-0 origin-top"
-                        style={{
-                            height: useTransform(mobileSmoothHeight, (v) => v - 10),
-                        }}
-                    >
-                        <img
-                            src="/line2.png"
-                            alt="line"
-                            className="select-none"
-                            draggable={false}
-                            style={{
-                                width: "28px",              // ✅ 이미지 자체 폭 고정
-                                height: "100%",            // ✅ 부모 높이에 맞게 세로만 늘림
-                                objectFit: "fill",
-                                objectPosition: "top",
-                                imageRendering: "crisp-edges",
-                                transformOrigin: "top center",
-                                display: "block",          // ✅ 인라인 공백 방지
-                                marginLeft: "-8px",   // ✅ 이미지만 오른쪽으로 이동
-                            }}
-                        />
-                    </motion.div>
-
-                    {/* ✅ 기존 텍스트 유지 */}
-                    <div ref={mobileStepsRef} className="flex flex-col gap-8 relative">
-                        {steps.map((step, index) => (
-                            <motion.div
-                                key={step.title}
-                                initial={{ opacity: 0, x: -20 }}
-                                whileInView={{ opacity: 1, x: 0 }}
-                                transition={{ duration: 0.6, delay: index * 0.1 }}
-                                viewport={{ once: true }}
-                                className="relative"
-                            >
-                                <div>
-                                    <h3
-                                        className="text-white font-bold mb-1"
-                                        style={{
-                                            fontFamily: "Pretendard",
-                                            fontSize: "22px",
-                                            fontWeight: 700,
-                                            letterSpacing: "-0.88px",
-                                        }}
-                                    >
-                                        {step.title}
-                                    </h3>
-
-                                    {/* <br/> 줄바꿈 허용 */}
-                                    <p
-                                        className="whitespace-pre-line"
-                                        style={{
-                                            fontFamily: "Pretendard",
-                                            fontSize: "16px",
-                                            fontWeight: 400,
-                                            letterSpacing: "-0.64px",
-                                            color: "rgba(255,255,255,0.8)",
-                                        }}
-                                        dangerouslySetInnerHTML={{ __html: step.desc }}
-                                    />
-                                </div>
-                            </motion.div>
-                        ))}
-                    </div>
-                </div>
-
-
+          {/* 오른쪽 프로세스 */}
+          <div ref={stepsRef} className="w-full lg:w-[50%] relative mt-[160px]">
+            <div className="flex flex-col gap-10 text-left">
+              {steps.map((s, i) => (
+                <motion.div
+                  key={s.title}
+                  initial={{ opacity: 0, y: -40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: i * 0.15 }}
+                  viewport={{ once: true }}
+                  className="relative flex items-start justify-between w-full"
+                >
+                  <div className="w-[70%] flex flex-col translate-x-[-8px] lg:translate-x-[-12px]">
+                    <p className="text-[19px] lg:text-[20px] font-bold mb-1 whitespace-nowrap">{s.title}</p>
+                    <p className="text-[14px] lg:text-[15px] text-white/85 whitespace-nowrap leading-relaxed">
+                      {s.desc}
+                    </p>
+                  </div>
+                  <div className="w-[30%] text-right mt-[10px] lg:mt-[14px]">
+                    <p className="text-[28px] lg:text-[30px] font-extrabold text-white/25 leading-none">{s.eng}</p>
+                  </div>
+                </motion.div>
+              ))}
             </div>
-        </section>
+          </div>
+        </div>
 
-    </>
+        <motion.div
+          className="absolute z-20 origin-top pointer-events-none"
+          style={{
+            left: `${lineLeft - 10}px`, // Moved 1px more to the left (from -9 to -10)
+            top: `${lineTop}px`,
+            width: "41px", // Increased width from 40px to 41px
+            height: smoothHeight,
+          }}
+        >
+          <img
+            src="/line2.png"
+            alt="line"
+            className="block w-full h-full select-none"
+            draggable={false}
+            style={{ objectFit: "fill" }}
+          />
+        </motion.div>
+      </div>
+    </section>
   )
 }
 
@@ -358,9 +238,8 @@ function RNDMarketingSection() {
                 className="pt-3 "
               >
                 <p className="text-[15px] lg:text-[16px] text-[#5B5B5B] leading-[1.4]">
-                  메뉴는 감이 아닌 전략입니다.
-                  <br />
-                  데이터와 현장 경험으로 검증한 오래가는 메뉴만 제안합니다.
+                    메뉴는 감이 아닌 전략입니다.<br/>
+                    데이터와 현장 경험으로 검증한 오래가는 메뉴만 제안합니다.
                 </p>
               </motion.div>
             </div>
@@ -391,12 +270,9 @@ function RNDMarketingSection() {
                 viewport={{ once: true }}
                 className="text-[14px] lg:text-[15px] text-[#3B3B3B] leading-[1.5]"
               >
-                손님은 운이 아니라 구조로 옵니다.
-                <br />
-                오픈 전부터 타겟 맞춤 광고로 매출 구조를 설계합니다.
-                <br />
-                광고비를 투자로 바꾸는 마케팅, 브릭업이 함께합니다.
-                <br />
+                  손님은 운이 아니라 구조로 옵니다.<br/>
+                  오픈 전부터 타겟 맞춤 광고로 매출 구조를 설계합니다.<br/>
+                  광고비를 투자로 바꾸는 마케팅, 브릭업이 함께합니다.<br/>
               </motion.p>
 
               <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
@@ -498,8 +374,7 @@ function RNDMarketingSection() {
             </span>
             <span className="block mb-2 leading-none text-[32px]">
               한 번의 광고가 <span className="font-bold text-[#16469E]">매출</span>이 됩니다.
-            </span>
-            <br />
+            </span><br/>
             <span className="block mb-1 leading-relaxed">당신은 요리사가 아니라, 사장입니다.</span>
             <span className="block font-bold leading-snug">그리고 브릭업은 그 사장을 성공시키는 팀입니다.</span>
           </p>
@@ -583,70 +458,70 @@ function IncubationConnectSection() {
           </div>
 
           {/* 다이아몬드 3개 (hover 시 순서대로 등장 후 유지) */}
-          <div className="relative mx-auto mt-16 h-[280px] lg:h-[440px] max-w-[335px] lg:max-w-[900px]">
-            {/* 기존 점주 */}
-            <motion.div
-              initial={{ opacity: 0, y: -40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              viewport={{ once: true, amount: 0.3 }}
-              className="absolute left-0 lg:left-[11%] top-0 w-[135px] h-[135px] lg:w-[279px] lg:h-[279px]
+            <div className="relative mx-auto mt-16 flex flex-col items-center lg:block lg:h-[440px] max-w-[900px]">
+                {/* 기존 점주 */}
+                <motion.div
+                    initial={{ opacity: 0, y: -40 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
+                    viewport={{ once: true, amount: 0.3 }}
+                    className="absolute left-[11%] top-0 w-[279px] h-[279px]
                    rotate-45 bg-[#4B5563] rounded-2xl shadow-md
                    hover:-translate-y-2 hover:shadow-[0_6px_20px_rgba(22,70,158,0.15)]
                    transition-all duration-700"
-            >
-              <div className="-rotate-45 flex flex-col items-center justify-center h-full text-center px-2 lg:px-4">
-                <p className="text-white font-extrabold text-[14px] lg:text-[18px]">기존 점주</p>
-                <p className="mt-1 lg:mt-2 text-white/90 text-[11px] lg:text-[14px] leading-[1.5]">
-                  권리금 손실을 최소화하고
-                  <br />
-                  새로운 기회를 찾을 수 있습니다
-                </p>
-              </div>
-            </motion.div>
+                >
+                    <div className="-rotate-45 flex flex-col items-center justify-center h-full text-center px-4">
+                        <p className="text-white font-extrabold text-[18px]">기존 점주</p>
+                        <p className="mt-2 text-white/90 text-[14px] leading-[1.5]">
+                            권리금 손실을 최소화하고
+                            <br />
+                            새로운 기회를 찾을 수 있습니다
+                        </p>
+                    </div>
+                </motion.div>
 
-            {/* 건물주 */}
-            <motion.div
-              initial={{ opacity: 0, y: -40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
-              viewport={{ once: true, amount: 0.3 }}
-              className="absolute right-0 lg:right-[11%] top-0 w-[135px] h-[135px] lg:w-[279px] lg:h-[279px]
+                {/* 건물주 */}
+                <motion.div
+                    initial={{ opacity: 0, y: -40 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
+                    viewport={{ once: true, amount: 0.3 }}
+                    className="absolute right-[11%] top-0 w-[279px] h-[279px]
                    rotate-45 bg-[#E8EAEC] rounded-2xl border border-[#E5E7EB] shadow-sm
                    hover:-translate-y-2 hover:shadow-[0_6px_20px_rgba(22,70,158,0.15)]
                    transition-all duration-700"
-            >
-              <div className="-rotate-45 flex flex-col items-center justify-center h-full text-center px-2 lg:px-4">
-                <p className="text-[#111827] font-extrabold text-[14px] lg:text-[18px]">건물주</p>
-                <p className="mt-1 lg:mt-2 text-[#374151] text-[11px] lg:text-[14px] leading-[1.5]">
-                  공실 걱정 없이
-                  <br />
-                  상가 임대 운영이 가능합니다
-                </p>
-              </div>
-            </motion.div>
+                >
+                    <div className="-rotate-45 flex flex-col items-center justify-center h-full text-center px-4">
+                        <p className="text-[#111827] font-extrabold text-[18px]">건물주</p>
+                        <p className="mt-2 text-[#374151] text-[14px] leading-[1.5]">
+                            공실 걱정 없이
+                            <br />
+                            상가 임대 운영이 가능합니다
+                        </p>
+                    </div>
+                </motion.div>
 
-            {/* 예비창업자 */}
-            <motion.div
-              initial={{ opacity: 0, y: -40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut", delay: 0.6 }}
-              viewport={{ once: true, amount: 0.3 }}
-              className="absolute left-1/2 -translate-x-1/2 top-[105px] lg:top-[205px] w-[135px] h-[135px] lg:w-[279px] lg:h-[279px]
+                {/* 예비창업자 */}
+                <motion.div
+                    initial={{ opacity: 0, y: -40 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, ease: "easeOut", delay: 0.6 }}
+                    viewport={{ once: true, amount: 0.3 }}
+                    className="absolute left-1/2 -translate-x-1/2 top-[205px] w-[279px] h-[279px]
                    rotate-45 bg-[#16469E] rounded-2xl shadow-lg z-20
                    hover:-translate-y-2 hover:shadow-[0_6px_20px_rgba(22,70,158,0.15)]
                    transition-all duration-700"
-            >
-              <div className="-rotate-45 flex flex-col items-center justify-center h-full text-center px-3 lg:px-6">
-                <p className="text-white font-extrabold text-[14px] lg:text-[18px]">예비창업자</p>
-                <p className="mt-1 lg:mt-2 text-white/90 text-[11px] lg:text-[14px] leading-[1.5]">
-                  검증된 점포를 안정적으로
-                  <br />
-                  인수할 수 있습니다
-                </p>
-              </div>
-            </motion.div>
-          </div>
+                >
+                    <div className="-rotate-45 flex flex-col items-center justify-center h-full text-center px-6">
+                        <p className="text-white font-extrabold text-[18px]">예비창업자</p>
+                        <p className="mt-2 text-white/90 text-[14px] leading-[1.5]">
+                            검증된 점포를 안정적으로
+                            <br />
+                            인수할 수 있습니다
+                        </p>
+                    </div>
+                </motion.div>
+            </div>
 
           {/* 하단 카드 (간격 200px) */}
           <div className="mt-[200px] grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10">
@@ -657,7 +532,7 @@ function IncubationConnectSection() {
                          hover:shadow-[0_6px_20px_rgba(22,70,158,0.15)]"
             >
               <h3 className="text-[#1F2937] text-[20px] lg:text-[22px] font-extrabold">양도/양수</h3>
-              <p className="mt-1 text-[15px] lg:text-[16px] text-[#4B5563] font-medium">기존 점주 & 예비창업자</p>
+              <p className="mt-1 text-[15px] lg:text-[16px] text-[#4B5563] font-medium">기존 사장님 & 예비창업자</p>
               <div className="mt-5 space-y-1 text-[14px] lg:text-[15px] text-[#4B5563] leading-[1.5]">
                 <p>• 현재 운영 중인 개인 매장 / 프랜차이즈 가맹점 모두 접수 가능</p>
                 <p>• 권리금·시설·임대 데이터를 기반으로 공정한 가치 산정</p>
@@ -709,26 +584,32 @@ function ContactInquirySection() {
   const [isSubmittingMain, setIsSubmittingMain] = useState(false)
 
   return (
-    <section className="relative overflow-hidden bg-[#F6F8FB]" aria-labelledby="contact-title">
-      {/* ✅ 배경 이미지 */}
-      <div
-        className="absolute inset-0"
-        style={{
-          backgroundImage: "url(/images/inquery_back.png)",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      />
+      <section
+          className="relative overflow-hidden bg-[#F6F8FB]"
+          aria-labelledby="contact-title"
+      >
+          {/* ✅ 배경 이미지 */}
+          <div
+              className="absolute inset-0"
+              style={{
+                  backgroundImage: "url(/images/inquery_back.png)",
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+              }}
+          />
 
-      {/* ✅ 흰색 반투명 오버레이 (텍스트 대비용) */}
-      <div className="absolute inset-0 bg-white/55" />
+          {/* ✅ 흰색 반투명 오버레이 (텍스트 대비용) */}
+          <div className="absolute inset-0 bg-white/55" />
 
-      {/* ✅ 실제 콘텐츠 */}
-      <div className="relative z-10 mx-auto max-w-[1440px] px-6 lg:px-10 py-16 lg:py-20">
-        <div className="grid grid-cols-1 lg:[grid-template-columns:1fr_700px] gap-10 lg:gap-16 items-start">
-          <div className="pt-2">
-            <h2 id="contact-title" className="text-[28px] lg:text-[36px] font-extrabold text-[#111827] tracking-tight">
-              창업 문의
+          {/* ✅ 실제 콘텐츠 */}
+          <div className="relative z-10 mx-auto max-w-[1440px] px-6 lg:px-10 py-16 lg:py-20">
+              <div className="grid grid-cols-1 lg:[grid-template-columns:1fr_700px] gap-10 lg:gap-16 items-start">
+                  <div className="pt-2">
+                      <h2
+                          id="contact-title"
+                          className="text-[28px] lg:text-[36px] font-extrabold text-[#111827] tracking-tight"
+                      >
+                          창업 문의
             </h2>
           </div>
 
@@ -761,7 +642,7 @@ function ContactInquirySection() {
                 const res = await fetch("/proxy.php", {
                   method: "POST",
                   headers: { "Content-Type": "application/json" },
-                  body: JSON.JSON.stringify(payload),
+                  body: JSON.stringify(payload),
                 })
 
                 if (res.ok) {
@@ -1295,6 +1176,23 @@ export default function FranchiseMatching() {
     }),
   }
 
+  const steps = [
+    { title: "상담", desc: "창업자의 예산·목표·성향을 듣는 것부터 시작합니다.", eng: "Consulting" },
+    { title: "브랜드 매칭", desc: "수백 개 프랜차이즈 중에서 조건에 맞는 브랜드를 선별합니다.", eng: "Matching" },
+    {
+      title: "상권 & 입지 분석",
+      desc: "본사추천입지 뿐만아니라, 브릭업 자체 점포개발팀이 성공가능성이 가장 높은자리를 찾습니다.",
+      eng: "Analysis",
+    },
+    {
+      title: "계약 & 준비",
+      desc: "가맹 계약서를 함께 검토하고, 인테리어부터 오픈까지 함께 준비합니다.",
+      eng: "Agreement",
+    },
+    { title: "매장 오픈", desc: "초기 홍보와 오픈 이벤트까지 함께 진행해 안정적인 출발을 돕습니다.", eng: "Opening" },
+    { title: "사후 관리", desc: "오픈 후에도 매출 관리, 운영 컨설팅을 꾸준히 이어갑니다.", eng: "Follow-up" },
+  ]
+
   return (
     <div className="relative w-full bg-white pb-[var(--mobile-sticky-height,0px)] lg:pb-0 overflow-x-hidden">
       {/* Hero Section - Desktop */}
@@ -1375,22 +1273,7 @@ export default function FranchiseMatching() {
         {/* Mouse Scroll Indicator */}
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10">
           <div className="animate-bounce">
-            <svg
-              width="40"
-              height="40"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="opacity-80"
-            >
-              <path
-                d="M7 10L12 15L17 10"
-                stroke="#3B3B3B"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+            <Image src="/images/scroll-mouse.png" alt="Scroll" width={40} height={60} className="opacity-80" />
           </div>
         </div>
       </section>
@@ -1420,17 +1303,13 @@ export default function FranchiseMatching() {
           </Link>
         </div>
 
-        <div
-          className="relative z-10 flex-1 flex flex-col items-center justify-center px-6 text-center cursor-default"
-          style={{ top: `calc(var(--spacing) * -7)` }}
-        >
+        {/* Main Content */}
+        <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-6 text-center cursor-default">
           <h1
             className="text-[#3B3B3B] mb-6 tracking-tight animate-fadeInDown"
             style={{
-              fontSize: "40px",
-              lineHeight: "normal",
-              letterSpacing: "-1.6px",
-              fontWeight: 400,
+              fontSize: "26px",
+              lineHeight: "1.3",
               animationDelay: "0s",
               opacity: 0,
               animationFillMode: "forwards",
@@ -1446,7 +1325,23 @@ export default function FranchiseMatching() {
               className="block animate-fadeInDown mb-1"
               style={{ animationDelay: "0.3s", opacity: 0, animationFillMode: "forwards" }}
             >
-              <span className="font-bold">검증된 성공</span>을
+              <span className="inline-block font-bold relative">
+                <span
+                  className="relative z-10 animate-textFadeIn px-2 py-0.5 text-white"
+                  style={{
+                    animationDelay: "0.6s",
+                    opacity: 0,
+                    animationFillMode: "forwards",
+                  }}
+                >
+                  검증된 성공
+                </span>
+                <span
+                  className="absolute inset-0 animate-bgSweepIn -z-10"
+                  style={{ animationDelay: "1.1s", top: "1px", bottom: "1px" }}
+                />
+              </span>
+              을
             </span>
             <span
               className="block animate-fadeInDown"
@@ -1459,55 +1354,31 @@ export default function FranchiseMatching() {
           <p
             className="text-[#3B3B3B] max-w-3xl tracking-tight animate-fadeInDown"
             style={{
-              fontSize: "16px",
-              lineHeight: "24px",
-              letterSpacing: "-0.64px",
-              fontWeight: 400,
+              fontSize: "15px",
+              lineHeight: "1.6",
               animationDelay: "1.2s",
               opacity: 0,
               animationFillMode: "forwards",
             }}
           >
-            브릭업은 <span className="font-bold">수많은 브랜드를 성공적으로</span>
+            브릭업은 <span className="font-bold">수많은 브랜드를 성공적으로 확장시켜 온 경험</span>을 바탕으로,
             <br />
-            <span className="font-bold">확장시켜 온 경험</span>을 바탕으로,
+            예비창업자가 처음부터 올바른 선택을 할 수 있도록 돕습니다.
             <br />
-            예비창업자가 처음부터 올바른 선택을
-            <br />할 수 있도록 돕습니다.
-            <br />
-            영업사원의 화려한 말이 아니라,
-            <br />
-            <span className="font-bold">실제 데이터와 검증된 노하우</span>로
-            <br />
-            창업의 길을 안내합니다.
+            <span className="font-bold">실제 데이터와 검증된 노하우</span>로 창업의 길을 안내합니다.
           </p>
         </div>
 
         {/* Mouse Scroll Indicator */}
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10">
           <div className="animate-bounce">
-            <svg
-              width="40"
-              height="40"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="opacity-80"
-            >
-              <path
-                d="M7 10L12 15L17 10"
-                stroke="#3B3B3B"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+            <Image src="/images/scroll-mouse.png" alt="Scroll" width={40} height={60} className="opacity-80" />
           </div>
         </div>
       </section>
 
-      {/* Industry Keywords Section - Desktop */}
-      <section className="hidden lg:block relative w-full overflow-hidden bg-white" style={{ height: "1100px" }}>
+      {/* Industry Keywords Section */}
+      <section className="relative w-full overflow-hidden bg-white" style={{ height: "1100px" }}>
         <div
           className="absolute inset-0 z-0 flex flex-col justify-evenly"
           style={{
@@ -1738,225 +1609,13 @@ export default function FranchiseMatching() {
                 lineHeight: "1.3",
               }}
             >
-              프랜차이즈 창업의 가장 큰 위험은
-              <br />
-              한두 군데만 알아보고, 영업사원 말에 끌려 계약하는 것입니다.
-              <br />
-              <br />
-              브릭업은 특정 브랜드만 권유하지 않습니다.
-              <br />
-              수백 개의 프랜차이즈 브랜드 중에서
-              <br />
-              예비창업자의 예산·입지·성향·운영 역량에 맞는 브랜드를 함께 찾아드립니다.
-            </motion.p>
-          </div>
-        </div>
-      </section>
+                프랜차이즈 창업의 가장 큰 위험은<br/>
+                한두 군데만 알아보고, 영업사원 말에 끌려 계약하는 것입니다.<br/>
+                <br/>
+                브릭업은 특정 브랜드만 권유하지 않습니다.<br/>
+                수백 개의 프랜차이즈 브랜드 중에서<br/>
+                예비창업자의 예산·입지·성향·운영 역량에 맞는 브랜드를 함께 찾아드립니다.
 
-      {/* Industry Keywords Section - Mobile */}
-      <section className="lg:hidden relative w-full overflow-hidden bg-white" style={{ height: "1100px" }}>
-        <div
-          className="absolute inset-0 z-0 flex flex-col justify-evenly"
-          style={{
-            maskImage:
-              "linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.3) 5%, rgba(0, 0, 0, 0.6) 20%, rgba(0, 0, 0, 1) 35%, rgba(0, 0, 0, 1) 100%)",
-            WebkitMaskImage:
-              "linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.3) 5%, rgba(0, 0, 0, 0.6) 20%, rgba(0, 0, 0, 1) 35%, rgba(0, 0, 0, 1) 100%)",
-          }}
-        >
-          {/* Row 1 - Left to Right */}
-          <div
-            className="flex whitespace-nowrap"
-            style={{
-              fontSize: "40px",
-              lineHeight: "40px",
-              color: "#EAEAEA",
-              fontFamily: "Pretendard",
-              fontWeight: 800,
-              animation: "scrollRight 25s linear infinite",
-            }}
-          >
-            <span className="inline-block px-6" style={{ fontSize: "40px", lineHeight: "40px" }}>
-              치킨 커피/카페 주점 패스트푸드 베이커리 피자 분식 한식 중식 일식 양식 퓨전 도소매 PC방 여가 오락 교육 육아
-              생활서비스
-            </span>
-            <span className="inline-block px-6" style={{ fontSize: "40px", lineHeight: "40px" }}>
-              치킨 커피/카페 주점 패스트푸드 베이커리 피자 분식 한식 중식 일식 양식 퓨전 도소매 PC방 여가 오락 교육 육아
-              생활서비스
-            </span>
-          </div>
-
-          {/* Row 2 - Right to Left */}
-          <div
-            className="flex whitespace-nowrap"
-            style={{
-              fontSize: "40px",
-              lineHeight: "40px",
-              color: "#EAEAEA",
-              fontFamily: "Pretendard",
-              fontWeight: 800,
-              animation: "scrollLeft 25s linear infinite",
-            }}
-          >
-            <span className="inline-block px-6" style={{ fontSize: "40px", lineHeight: "40px" }}>
-              소자본(5천 미만) 1인 창업 무인 창업 부부 창업 배달 창업 샵인샵 업종 변경 뜨는 창업 치킨 커피/카페 주점
-              패스트푸드
-            </span>
-            <span className="inline-block px-6" style={{ fontSize: "40px", lineHeight: "40px" }}>
-              소자본(5천 미만) 1인 창업 무인 창업 부부 창업 배달 창업 샵인샵 업종 변경 뜨는 창업 치킨 커피/카페 주점
-              패스트푸드
-            </span>
-          </div>
-
-          {/* Row 3 - Left to Right */}
-          <div
-            className="flex whitespace-nowrap"
-            style={{
-              fontSize: "40px",
-              lineHeight: "40px",
-              color: "#EAEAEA",
-              fontFamily: "Pretendard",
-              fontWeight: 800,
-              animation: "scrollRight 25s linear infinite",
-            }}
-          >
-            <span className="inline-block px-6" style={{ fontSize: "40px", lineHeight: "40px" }}>
-              베이커리 피자 분식 한식 중식 일식 양식 퓨전 도소매 PC방 여가 오락 교육 육아 생활서비스 소자본(5천 미만)
-            </span>
-            <span className="inline-block px-6" style={{ fontSize: "40px", lineHeight: "40px" }}>
-              베이커리 피자 분식 한식 중식 일식 양식 퓨전 도소매 PC방 여가 오락 교육 육아 생활서비스 소자본(5천 미만)
-            </span>
-          </div>
-
-          {/* Row 4 - Right to Left */}
-          <div
-            className="flex whitespace-nowrap"
-            style={{
-              fontSize: "40px",
-              lineHeight: "40px",
-              color: "#EAEAEA",
-              fontFamily: "Pretendard",
-              fontWeight: 800,
-              animation: "scrollLeft 25s linear infinite",
-            }}
-          >
-            <span className="inline-block px-6" style={{ fontSize: "40px", lineHeight: "40px" }}>
-              1인 창업 무인 창업 부부 창업 배달 창업 샵인샵 업종 변경 뜨는 창업 치킨 커피/카페 주점 패스트푸드 베이커리
-              피자
-            </span>
-            <span className="inline-block px-6" style={{ fontSize: "40px", lineHeight: "40px" }}>
-              1인 창업 무인 창업 부부 창업 배달 창업 샵인샵 업종 변경 뜨는 창업 치킨 커피/카페 주점 패스트푸드 베이커리
-              피자
-            </span>
-          </div>
-
-          {/* Row 5 - Left to Right */}
-          <div
-            className="flex whitespace-nowrap"
-            style={{
-              fontSize: "40px",
-              lineHeight: "40px",
-              color: "#EAEAEA",
-              fontFamily: "Pretendard",
-              fontWeight: 800,
-              animation: "scrollRight 25s linear infinite",
-            }}
-          >
-            <span className="inline-block px-6" style={{ fontSize: "40px", lineHeight: "40px" }}>
-              분식 한식 중식 일식 양식 퓨전 도소매 PC방 여가 오락 교육 육아 생활서비스 소자본(5천 미만) 1인 창업 무인
-              창업
-            </span>
-            <span className="inline-block px-6" style={{ fontSize: "40px", lineHeight: "40px" }}>
-              분식 한식 중식 일식 양식 퓨전 도소매 PC방 여가 오락 교육 육아 생활서비스 소자본(5천 미만) 1인 창업 무인
-              창업
-            </span>
-          </div>
-
-          {/* Row 6 - Right to Left */}
-          <div
-            className="flex whitespace-nowrap"
-            style={{
-              fontSize: "40px",
-              lineHeight: "40px",
-              color: "#EAEAEA",
-              fontFamily: "Pretendard",
-              fontWeight: 800,
-              animation: "scrollLeft 25s linear infinite",
-            }}
-          >
-            <span className="inline-block px-6" style={{ fontSize: "40px", lineHeight: "40px" }}>
-              부부 창업 배달 창업 샵인샵 업종 변경 뜨는 창업 치킨 커피/카페 주점 패스트푸드 베이커리 피자 분식 한식 중식
-            </span>
-            <span className="inline-block px-6" style={{ fontSize: "40px", lineHeight: "40px" }}>
-              부부 창업 배달 창업 샵인샵 업종 변경 뜨는 창업 치킨 커피/카페 주점 패스트푸드 베이커리 피자 분식 한식 중식
-            </span>
-          </div>
-        </div>
-
-        <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            whileInView={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 1.2, ease: "easeOut" }}
-            viewport={{ once: true, amount: 0.3 }}
-            className="rounded-full bg-[#16469E]"
-            style={{
-              width: "524px",
-              height: "524px",
-            }}
-          />
-        </div>
-
-        <div className="absolute inset-0 z-20 flex items-center justify-center px-6">
-          <div className="text-center max-w-5xl">
-            {/* Title */}
-            <motion.h2
-              initial={{ opacity: 0, y: -30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8, duration: 0.8, ease: "easeOut" }}
-              viewport={{ once: true }}
-              className="text-white mb-6"
-              style={{
-                fontSize: "36px",
-                lineHeight: "normal",
-                letterSpacing: "-1.44px",
-                fontFamily: "Pretendard",
-                fontWeight: 300,
-              }}
-            >
-              수백개의
-              <br />
-              프랜차이즈 중,
-              <br />
-              당신에게 맞는
-              <br />
-              <span style={{ fontWeight: 700 }}>단 하나</span>를 찾습니다
-            </motion.h2>
-
-            {/* Body Text */}
-            <motion.p
-              initial={{ opacity: 0, y: -30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.1, duration: 0.8, ease: "easeOut" }}
-              viewport={{ once: true }}
-              className="text-white"
-              style={{
-                fontSize: "16px",
-                lineHeight: "24px",
-                letterSpacing: "-0.64px",
-                fontFamily: "Pretendard",
-                fontWeight: 400,
-              }}
-            >
-              브릭업은 <span style={{ fontWeight: 700 }}>수많은 브랜드를 성공적으로 확장시켜 온 경험</span>을 바탕으로,
-              <br />
-              예비창업자가 처음부터 올바른 선택을 할 수 있도록 돕습니다.
-              <br />
-              영업사원의 화려한 말이 아니라,
-              <br />
-              <span style={{ fontWeight: 700 }}>실제 데이터와 검증된 노하우</span>로
-              <br />
-              창업의 길을 안내합니다.
             </motion.p>
           </div>
         </div>
@@ -1982,8 +1641,7 @@ export default function FranchiseMatching() {
               viewport={{ once: true }}
               className="text-white text-3xl lg:text-5xl mb-12 lg:mb-16"
             >
-              <span className="font-bold">브릭업과 함께</span>라면{" "}
-              <span className="inline-block px-3 py-1 bg-white text-[#16469E] font-bold">당신의 스토리</span>가 됩니다.
+              <span className="font-bold">브릭업과 함께</span>라면 당신의 스토리가 됩니다.
             </motion.p>
 
             <motion.div
@@ -2001,7 +1659,7 @@ export default function FranchiseMatching() {
               <p className="text-white text-6xl lg:text-8xl font-bold">
                 {counterValue.toLocaleString()}
                 <span className="text-5xl lg:text-7xl">+</span>
-                <span className="text-[50px]"> 건</span>
+                  <span className="text-[50px]">  건</span>
               </p>
             </motion.div>
 
@@ -2033,9 +1691,8 @@ export default function FranchiseMatching() {
                 퇴직금으로 시작하는데, 솔직히 서울에서 장사가 될까 싶었어요.{" "}
                 <span className="font-bold">브릭업이 상권분석부터 마케팅까지</span> 다 챙겨주더라고요. 지금은{" "}
                 <span className="font-bold">한 달에 매출이 안정적으로 3천만 원 정도</span> 나와요. 혼자 했으면 절대
-                못했을 거예요.
-                <br />
-                <span className="font-bold mb-4">ㅇㅇ떡볶이 자양점</span>
+                못했을 거예요.<br/>
+                  <span className="font-bold mb-4">ㅇㅇ떡볶이 자양점</span>
               </p>
             </motion.div>
 
@@ -2051,9 +1708,8 @@ export default function FranchiseMatching() {
               <p className="text-[#414141] text-sm lg:text-base leading-relaxed">
                 치킨집이 이미 많았는데, 주변에서 말렸어요. 근데{" "}
                 <span className="font-bold">브릭업이 경쟁 매장들까지 분석</span>해서 차별화 전략을 짜주더라고요. 지금은{" "}
-                <span className="font-bold">매출이 옆 매장보다 20%는 더 나와요.</span> 브릭업 덕분에 제대로 시작했어요.
-                <br />
-                <span className="font-bold mb-4">ㅇㅇ치킨 부산 경성대점</span>
+                <span className="font-bold">매출이 옆 매장보다 20%는 더 나와요.</span> 브릭업 덕분에 제대로 시작했어요.<br/>
+                  <span className="font-bold mb-4">ㅇㅇ치킨 부산 경성대점</span>
               </p>
             </motion.div>
 
@@ -2070,9 +1726,8 @@ export default function FranchiseMatching() {
                 인테리어 비용만 생각했는데, 생각보다 돈이 많이 들더라고요.{" "}
                 <span className="font-bold">브릭업이 본사랑 직접 조율</span>해서 적정 조건으로 계약했어요. 결과적으로{" "}
                 <span className="font-bold">초기 투자금이 15% 정도 절약</span>됐어요. 처음 창업하시는 분들 상담받는 거
-                추천해요.
-                <br />
-                <span className="font-bold mb-4">ㅇㅇ커피 일산대화역점</span>
+                추천해요.<br/>
+                  <span className="font-bold mb-4">ㅇㅇ커피 일산대화역점</span>
               </p>
             </motion.div>
           </div>

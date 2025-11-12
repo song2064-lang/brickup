@@ -69,15 +69,15 @@ export default function Home() {
         <div className="absolute inset-0 bg-[#16469E] opacity-0 lg:group-hover/right:opacity-60 transition-opacity duration-500" />
 
         <div className="relative z-10 text-center px-6 sm:px-8 cursor-default">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-2 sm:mb-4 lg:mb-6 whitespace-nowrap leading-tight">
-                프랜차이즈 매칭
-            </h1>
-            <p className="text-lg sm:text-xl lg:text-2xl xl:text-3xl text-white mb-1 sm:mb-3 lg:mb-4">
-                예비창업자
-            </p>
-            <p className="text-sm sm:text-base lg:text-lg xl:text-xl text-white mb-5 sm:mb-8 lg:mb-10">
-                Personal Consulting
-            </p>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-[#3b3b3b] lg:text-white mb-2 sm:mb-4 lg:mb-6 whitespace-nowrap leading-tight">
+            프랜차이즈 매칭
+          </h1>
+          <p className="text-lg sm:text-xl lg:text-2xl xl:text-3xl text-[#3b3b3b]/90 lg:text-white/90 mb-1 sm:mb-3 lg:mb-4">
+            예비창업자
+          </p>
+          <p className="text-sm sm:text-base lg:text-lg xl:text-xl text-[#3b3b3b]/70 lg:text-white/80 mb-5 sm:mb-8 lg:mb-10">
+            Personal Consulting
+          </p>
 
           <Link
             href="/franchise-matching"
